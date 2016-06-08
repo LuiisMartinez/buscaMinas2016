@@ -3,37 +3,128 @@ package gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class GUI extends javax.swing.JFrame {
 
     static String[][] matrizCompleta;
-    public static int FILAS = 9;
-    public static int COLUMNAS = 9;
-    public static int CANTI_BOMBAS = 10;
-    JButton[][] btnAutoma = new JButton[FILAS][COLUMNAS];
+    public static int CANT_FILAS = 0;
+    public static int CANT_COLUMNAS = 0;
+    public static int CANT_BOMBAS = 0;
+    JButton[][] btnAutoma;
 
     public GUI() {
         initComponents();
-        matrizCompleta = new String[FILAS][COLUMNAS];
-        generarMatrizCompleta();
-        generarBombasDeMatriz();
-        metodoCantBombas();
-        mostrarMatriz();
-
-        pnlTodo.setVisible(false);
-
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        modoPrincipiante = new javax.swing.JFrame();
+        pnlJuegoPricipiante = new javax.swing.JPanel();
+        modoRegular = new javax.swing.JFrame();
+        pnlJuegoRegular = new javax.swing.JPanel();
+        modoAvanzado = new javax.swing.JFrame();
+        pnlJuegoAvanzado = new javax.swing.JPanel();
+        grupElegirDificultad = new javax.swing.ButtonGroup();
+        pnlInicioJuego = new javax.swing.JPanel();
         btnCrearJuego = new javax.swing.JButton();
-        pnlTodo = new javax.swing.JPanel();
+        opPrincipiante = new javax.swing.JRadioButton();
+        opRelugar = new javax.swing.JRadioButton();
+        opAvanzado = new javax.swing.JRadioButton();
+
+        javax.swing.GroupLayout pnlJuegoPricipianteLayout = new javax.swing.GroupLayout(pnlJuegoPricipiante);
+        pnlJuegoPricipiante.setLayout(pnlJuegoPricipianteLayout);
+        pnlJuegoPricipianteLayout.setHorizontalGroup(
+            pnlJuegoPricipianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 390, Short.MAX_VALUE)
+        );
+        pnlJuegoPricipianteLayout.setVerticalGroup(
+            pnlJuegoPricipianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 390, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout modoPrincipianteLayout = new javax.swing.GroupLayout(modoPrincipiante.getContentPane());
+        modoPrincipiante.getContentPane().setLayout(modoPrincipianteLayout);
+        modoPrincipianteLayout.setHorizontalGroup(
+            modoPrincipianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modoPrincipianteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        modoPrincipianteLayout.setVerticalGroup(
+            modoPrincipianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modoPrincipianteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlJuegoRegular.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout pnlJuegoRegularLayout = new javax.swing.GroupLayout(pnlJuegoRegular);
+        pnlJuegoRegular.setLayout(pnlJuegoRegularLayout);
+        pnlJuegoRegularLayout.setHorizontalGroup(
+            pnlJuegoRegularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 666, Short.MAX_VALUE)
+        );
+        pnlJuegoRegularLayout.setVerticalGroup(
+            pnlJuegoRegularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 661, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout modoRegularLayout = new javax.swing.GroupLayout(modoRegular.getContentPane());
+        modoRegular.getContentPane().setLayout(modoRegularLayout);
+        modoRegularLayout.setHorizontalGroup(
+            modoRegularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modoRegularLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlJuegoRegular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        modoRegularLayout.setVerticalGroup(
+            modoRegularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modoRegularLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlJuegoRegular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout pnlJuegoAvanzadoLayout = new javax.swing.GroupLayout(pnlJuegoAvanzado);
+        pnlJuegoAvanzado.setLayout(pnlJuegoAvanzadoLayout);
+        pnlJuegoAvanzadoLayout.setHorizontalGroup(
+            pnlJuegoAvanzadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1092, Short.MAX_VALUE)
+        );
+        pnlJuegoAvanzadoLayout.setVerticalGroup(
+            pnlJuegoAvanzadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 601, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout modoAvanzadoLayout = new javax.swing.GroupLayout(modoAvanzado.getContentPane());
+        modoAvanzado.getContentPane().setLayout(modoAvanzadoLayout);
+        modoAvanzadoLayout.setHorizontalGroup(
+            modoAvanzadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modoAvanzadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlJuegoAvanzado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        modoAvanzadoLayout.setVerticalGroup(
+            modoAvanzadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(modoAvanzadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlJuegoAvanzado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        pnlInicioJuego.setBorder(javax.swing.BorderFactory.createTitledBorder("BuscaMinas"));
 
         btnCrearJuego.setText("Comenzar");
         btnCrearJuego.addActionListener(new java.awt.event.ActionListener() {
@@ -42,63 +133,92 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        pnlTodo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        grupElegirDificultad.add(opPrincipiante);
+        opPrincipiante.setSelected(true);
+        opPrincipiante.setText("Modo principiante");
 
-        javax.swing.GroupLayout pnlTodoLayout = new javax.swing.GroupLayout(pnlTodo);
-        pnlTodo.setLayout(pnlTodoLayout);
-        pnlTodoLayout.setHorizontalGroup(
-            pnlTodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 436, Short.MAX_VALUE)
+        grupElegirDificultad.add(opRelugar);
+        opRelugar.setText("Modo Regular");
+
+        grupElegirDificultad.add(opAvanzado);
+        opAvanzado.setText("Modo Avanzado");
+
+        javax.swing.GroupLayout pnlInicioJuegoLayout = new javax.swing.GroupLayout(pnlInicioJuego);
+        pnlInicioJuego.setLayout(pnlInicioJuegoLayout);
+        pnlInicioJuegoLayout.setHorizontalGroup(
+            pnlInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlInicioJuegoLayout.createSequentialGroup()
+                .addGroup(pnlInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlInicioJuegoLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(pnlInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(opPrincipiante)
+                            .addComponent(opRelugar, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(opAvanzado, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addGroup(pnlInicioJuegoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnCrearJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        pnlTodoLayout.setVerticalGroup(
-            pnlTodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 351, Short.MAX_VALUE)
+        pnlInicioJuegoLayout.setVerticalGroup(
+            pnlInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInicioJuegoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(opPrincipiante)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(opRelugar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(opAvanzado)
+                .addGap(18, 18, 18)
+                .addComponent(btnCrearJuego)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCrearJuego, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlTodo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlInicioJuego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnCrearJuego)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlInicioJuego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearJuegoActionPerformed
-        pnlTodo.setVisible(true);
-
-        pnlTodo.setLayout(new GridLayout(FILAS, COLUMNAS, -3, -3));
-
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                JButton btnA = new JButton();
-                btnAutoma[i][j] = btnA;
-                btnA.setName(i + "/" + j);
-
-                pnlTodo.add(btnA);
-                //System.out.println(btnA.getName());
-
-                verBntApretado(btnA);
-
-            }
+        if(opPrincipiante.isSelected()){
+            modoPrincipiante.setBounds(0, 0, 450, 450);
+            modoPrincipiante.setLocationRelativeTo(null);
+            modoPrincipiante.setResizable(false);
+            modoPrincipiante.setVisible(true);
+            
+            comenzarCrearTodo(9, 9, 10);
+            
+        }else if(opRelugar.isSelected()){
+            modoRegular.setBounds(0, 0, 690, 690);
+            modoRegular.setLocationRelativeTo(null);
+            modoRegular.setResizable(false);
+            modoRegular.setVisible(true);
+            
+            comenzarCrearTodo(16, 16, 10);
+        }else if(opAvanzado.isSelected()){
+            modoAvanzado.setBounds(0, 0, 1300, 690);
+            modoAvanzado.setLocationRelativeTo(null);
+            modoAvanzado.setResizable(false);
+            modoAvanzado.setVisible(true);
+            
+            comenzarCrearTodo(16, 30, 10);
         }
-
-
+        
     }//GEN-LAST:event_btnCrearJuegoActionPerformed
 
     /**
@@ -138,9 +258,64 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearJuego;
-    private javax.swing.JPanel pnlTodo;
+    private javax.swing.ButtonGroup grupElegirDificultad;
+    private javax.swing.JFrame modoAvanzado;
+    private javax.swing.JFrame modoPrincipiante;
+    private javax.swing.JFrame modoRegular;
+    private javax.swing.JRadioButton opAvanzado;
+    private javax.swing.JRadioButton opPrincipiante;
+    private javax.swing.JRadioButton opRelugar;
+    private javax.swing.JPanel pnlInicioJuego;
+    private javax.swing.JPanel pnlJuegoAvanzado;
+    private javax.swing.JPanel pnlJuegoPricipiante;
+    private javax.swing.JPanel pnlJuegoRegular;
     // End of variables declaration//GEN-END:variables
 
+    private void comenzarCrearTodo(int cantFilas, int cantColumnas, int cantBomb) {
+        if(opPrincipiante.isSelected()){
+            pnlJuegoPricipiante.setVisible(true);
+            pnlJuegoPricipiante.setLayout(new GridLayout(cantFilas, cantColumnas, -3, -3));
+        }else if(opRelugar.isSelected()){
+            pnlJuegoRegular.setVisible(true);
+            pnlJuegoRegular.setLayout(new GridLayout(cantFilas, cantColumnas, -3, -3));
+        }else if(opAvanzado.isSelected()){
+            pnlJuegoAvanzado.setVisible(true);
+            pnlJuegoAvanzado.setLayout(new GridLayout(cantFilas, cantColumnas, -3, -3));
+        }
+        
+        CANT_FILAS = cantFilas;
+        CANT_COLUMNAS = cantColumnas;
+        CANT_BOMBAS = cantBomb;
+        
+        btnAutoma = new JButton[cantFilas][cantColumnas];
+        matrizCompleta = new String[cantFilas][cantColumnas];
+        generarMatrizCompleta();
+        generarBombasDeMatriz(cantBomb);
+        metodoCantBombas();
+        mostrarMatriz();
+        
+        for (int i = 0; i < cantFilas; i++) {
+            for (int j = 0; j < cantColumnas; j++) {
+                JButton btnA = new JButton();
+                btnAutoma[i][j] = btnA;
+                btnA.setName(i + "/" + j);
+                
+                if(opPrincipiante.isSelected()){
+                    pnlJuegoPricipiante.add(btnA);
+                }else if(opRelugar.isSelected()){
+                    pnlJuegoRegular.add(btnA);
+                }else if(opAvanzado.isSelected()){
+                    pnlJuegoAvanzado.add(btnA);
+                    
+                }
+                //System.out.println(btnA.getName());
+
+                verBntApretado(btnA);
+
+            }
+        }
+    }
+    
     private static void generarMatrizCompleta() {
 
         for (int f = 0; f < matrizCompleta.length; f++) {
@@ -170,7 +345,7 @@ public class GUI extends javax.swing.JFrame {
                             matrizCompleta[f][c] = Integer.toString(cantBomb);
                         }
 
-                    } else if (c == COLUMNAS - 1) {// [Primera] fila esquina derecha.
+                    } else if (c == CANT_COLUMNAS - 1) {// [Primera] fila esquina derecha.
                         if (!matrizCompleta[f][c].equals("x")) {
                             if (matrizCompleta[f][c - 1].equals("x")) {
                                 cantBomb++;
@@ -202,7 +377,7 @@ public class GUI extends javax.swing.JFrame {
                         matrizCompleta[f][c] = Integer.toString(cantBomb);
                     }
 
-                } else if (f == FILAS - 1) {
+                } else if (f == CANT_FILAS - 1) {
                     if (c == 0) {// [Ultima] fila esquina izquierda.
                         if (!matrizCompleta[f][c].equals("x")) {
                             if (matrizCompleta[f][c + 1].equals("x")) {
@@ -218,7 +393,7 @@ public class GUI extends javax.swing.JFrame {
 
                         }
 
-                    } else if (c == COLUMNAS - 1) {// [Ultima] fila esquina derecha.
+                    } else if (c == CANT_COLUMNAS - 1) {// [Ultima] fila esquina derecha.
                         if (!matrizCompleta[f][c].equals("x")) {
                             if (matrizCompleta[f][c - 1].equals("x")) {
                                 cantBomb++;
@@ -270,7 +445,7 @@ public class GUI extends javax.swing.JFrame {
                         matrizCompleta[f][c] = Integer.toString(cantBomb);
                     }
 
-                } else if (c == COLUMNAS - 1) {// [Almedio] esquina derecha.
+                } else if (c == CANT_COLUMNAS - 1) {// [Almedio] esquina derecha.
                     if (!matrizCompleta[f][c].equals("x")) {
                         if (matrizCompleta[f - 1][c].equals("x")) {
                             cantBomb++;
@@ -319,17 +494,17 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
-    private static void generarBombasDeMatriz() {
+    private static void generarBombasDeMatriz(int cantBombas) {
         int cc = 0;
         for (int f = 0; f < matrizCompleta.length; f++) {
 
             for (int c = 0; c < matrizCompleta[f].length; c++) {
 
                 Random rand = new Random();
-                int x = rand.nextInt(FILAS);
-                int y = rand.nextInt(COLUMNAS);
+                int x = rand.nextInt(CANT_FILAS);
+                int y = rand.nextInt(CANT_COLUMNAS);
 
-                if (cc < CANTI_BOMBAS) {
+                if (cc < cantBombas) {
                     if(!matrizCompleta[x][y].equals("x")){
                         matrizCompleta[x][y] = "x";
                         cc++;
@@ -364,7 +539,13 @@ public class GUI extends javax.swing.JFrame {
                 
                 if (matrizCompleta[numX][numY].equals("x")) {
                     System.out.println("pumbaaaa");
-                    btn.setText("X");
+//                    btn.setText("X");
+                    
+                    btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomb2.png")));
+                    
+                    
+//                    jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bomb.png")));
+                    
                 } else if (matrizCompleta[numX][numY].equals("0")) {
                     System.out.println("NaicBomba");
                     
@@ -402,7 +583,7 @@ public class GUI extends javax.swing.JFrame {
                     @Override
                     public void run() {
                         int numNuevo = numXX + 1;
-                        if (numNuevo <= COLUMNAS - 1) {
+                        if (numNuevo <= CANT_COLUMNAS - 1) {
                             if (matrizCompleta[numNuevo][numYY].equals("0")) {
                                 matrizCompleta[numNuevo][numYY] = "";
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
@@ -438,7 +619,7 @@ public class GUI extends javax.swing.JFrame {
                     @Override
                     public void run() {
                         int numNuevo = numYY + 1;
-                        if (numNuevo <= FILAS - 1) {
+                        if (numNuevo <= CANT_FILAS - 1) {
                             if (matrizCompleta[numXX][numNuevo].equals("0")) {
                                 matrizCompleta[numXX][numNuevo] = "";
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
@@ -459,24 +640,24 @@ public class GUI extends javax.swing.JFrame {
 
     private void mostrarBotonesEsquinas(int numXXX, int numYYY) {
         btnAutoma[numXXX][numYYY].setText(matrizCompleta[numXXX][numYYY]);
-        if(numXXX+1 >=0 && numXXX+1 <=COLUMNAS-1 && numYYY+1 >=0 && numYYY+1 <=FILAS-1){//Derecha
+        if(numXXX+1 >=0 && numXXX+1 <=CANT_FILAS-1 && numYYY+1 >=0 && numYYY+1 <=CANT_COLUMNAS-1){//Derecha
             if(!matrizCompleta[numXXX+1][numYYY+1].equals("") && !matrizCompleta[numXXX+1][numYYY+1].equals("0")){
                 btnAutoma[numXXX+1][numYYY+1].setText(matrizCompleta[numXXX+1][numYYY+1]);
             }
         }
-        if(numXXX-1 >=0 && numXXX-1 <=COLUMNAS-1 && numYYY+1 >=0 && numYYY+1 <=FILAS-1){//Izquierda
+        if(numXXX-1 >=0 && numXXX-1 <=CANT_FILAS-1 && numYYY+1 >=0 && numYYY+1 <=CANT_COLUMNAS-1){//Izquierda
             if(!matrizCompleta[numXXX-1][numYYY+1].equals("") && !matrizCompleta[numXXX-1][numYYY+1].equals("0")){
                 btnAutoma[numXXX-1][numYYY+1].setText(matrizCompleta[numXXX-1][numYYY+1]);
             }
             
         }
-        if(numXXX+1 >=0 && numXXX+1 <=COLUMNAS-1 && numYYY-1 >=0 && numYYY-1 <=FILAS-1){//Arriba
+        if(numXXX+1 >=0 && numXXX+1 <=CANT_FILAS-1 && numYYY-1 >=0 && numYYY-1 <=CANT_COLUMNAS-1){//Arriba
             if(!matrizCompleta[numXXX+1][numYYY-1].equals("") && !matrizCompleta[numXXX+1][numYYY-1].equals("0")){
                 btnAutoma[numXXX+1][numYYY-1].setText(matrizCompleta[numXXX+1][numYYY-1]);
             }
             
         }
-        if(numXXX-1 >=0 && numXXX-1 <=COLUMNAS-1 && numYYY-1 >=0 && numYYY-1 <=FILAS-1){//Abajo
+        if(numXXX-1 >=0 && numXXX-1 <=CANT_FILAS-1 && numYYY-1 >=0 && numYYY-1 <=CANT_COLUMNAS-1){//Abajo
             if(!matrizCompleta[numXXX-1][numYYY-1].equals("") && !matrizCompleta[numXXX-1][numYYY-1].equals("0")){
                 btnAutoma[numXXX-1][numYYY-1].setText(matrizCompleta[numXXX-1][numYYY-1]);
             }
@@ -484,5 +665,5 @@ public class GUI extends javax.swing.JFrame {
         }
         
     }
- 
+
 }
