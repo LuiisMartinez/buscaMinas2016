@@ -3,7 +3,7 @@ package gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +11,7 @@ import javax.swing.JButton;
 public class GUI extends javax.swing.JFrame {
 
     static String[][] matrizCompleta;
+    static String[][] matrizCompleta2;
     public static int CANT_FILAS = 0;
     public static int CANT_COLUMNAS = 0;
     public static int CANT_BOMBAS = 0;
@@ -54,15 +55,15 @@ public class GUI extends javax.swing.JFrame {
             modoPrincipianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(modoPrincipianteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         modoPrincipianteLayout.setVerticalGroup(
             modoPrincipianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(modoPrincipianteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pnlJuegoRegular.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -195,30 +196,32 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearJuegoActionPerformed
-        if(opPrincipiante.isSelected()){
+        if (opPrincipiante.isSelected()) {
             modoPrincipiante.setBounds(0, 0, 450, 450);
             modoPrincipiante.setLocationRelativeTo(null);
             modoPrincipiante.setResizable(false);
             modoPrincipiante.setVisible(true);
-            
+
             comenzarCrearTodo(9, 9, 10);
-            
-        }else if(opRelugar.isSelected()){
+
+        } else if (opRelugar.isSelected()) {
             modoRegular.setBounds(0, 0, 690, 690);
             modoRegular.setLocationRelativeTo(null);
             modoRegular.setResizable(false);
             modoRegular.setVisible(true);
-            
+
             comenzarCrearTodo(16, 16, 10);
-        }else if(opAvanzado.isSelected()){
+
+        } else if (opAvanzado.isSelected()) {
             modoAvanzado.setBounds(0, 0, 1300, 690);
             modoAvanzado.setLocationRelativeTo(null);
             modoAvanzado.setResizable(false);
             modoAvanzado.setVisible(true);
-            
+
             comenzarCrearTodo(16, 30, 10);
+
         }
-        
+
     }//GEN-LAST:event_btnCrearJuegoActionPerformed
 
     /**
@@ -272,50 +275,51 @@ public class GUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void comenzarCrearTodo(int cantFilas, int cantColumnas, int cantBomb) {
-        if(opPrincipiante.isSelected()){
+        if (opPrincipiante.isSelected()) {
             pnlJuegoPricipiante.setVisible(true);
             pnlJuegoPricipiante.setLayout(new GridLayout(cantFilas, cantColumnas, -3, -3));
-        }else if(opRelugar.isSelected()){
+        } else if (opRelugar.isSelected()) {
             pnlJuegoRegular.setVisible(true);
             pnlJuegoRegular.setLayout(new GridLayout(cantFilas, cantColumnas, -3, -3));
-        }else if(opAvanzado.isSelected()){
+        } else if (opAvanzado.isSelected()) {
             pnlJuegoAvanzado.setVisible(true);
             pnlJuegoAvanzado.setLayout(new GridLayout(cantFilas, cantColumnas, -3, -3));
         }
-        
+
         CANT_FILAS = cantFilas;
         CANT_COLUMNAS = cantColumnas;
         CANT_BOMBAS = cantBomb;
-        
+
         btnAutoma = new JButton[cantFilas][cantColumnas];
         matrizCompleta = new String[cantFilas][cantColumnas];
+        matrizCompleta2 = new String[cantFilas][cantColumnas];
         generarMatrizCompleta();
         generarBombasDeMatriz(cantBomb);
         metodoCantBombas();
         mostrarMatriz();
-        
+
         for (int i = 0; i < cantFilas; i++) {
             for (int j = 0; j < cantColumnas; j++) {
                 JButton btnA = new JButton();
                 btnAutoma[i][j] = btnA;
                 btnA.setName(i + "/" + j);
-                
-                if(opPrincipiante.isSelected()){
+
+                if (opPrincipiante.isSelected()) {
                     pnlJuegoPricipiante.add(btnA);
-                }else if(opRelugar.isSelected()){
+                } else if (opRelugar.isSelected()) {
                     pnlJuegoRegular.add(btnA);
-                }else if(opAvanzado.isSelected()){
+                } else if (opAvanzado.isSelected()) {
                     pnlJuegoAvanzado.add(btnA);
-                    
+
                 }
                 //System.out.println(btnA.getName());
 
                 verBntApretado(btnA);
-
+                verClikDerecho(btnA);
             }
         }
     }
-    
+
     private static void generarMatrizCompleta() {
 
         for (int f = 0; f < matrizCompleta.length; f++) {
@@ -323,6 +327,13 @@ public class GUI extends javax.swing.JFrame {
                 matrizCompleta[f][c] = "o";
             }
         }
+
+        for (int f = 0; f < matrizCompleta2.length; f++) {
+            for (int c = 0; c < matrizCompleta2[f].length; c++) {
+                matrizCompleta2[f][c] = "sinB";
+            }
+        }
+
     }
 
     private static void metodoCantBombas() {
@@ -505,7 +516,7 @@ public class GUI extends javax.swing.JFrame {
                 int y = rand.nextInt(CANT_COLUMNAS);
 
                 if (cc < cantBombas) {
-                    if(!matrizCompleta[x][y].equals("x")){
+                    if (!matrizCompleta[x][y].equals("x")) {
                         matrizCompleta[x][y] = "x";
                         cc++;
                     }
@@ -528,31 +539,40 @@ public class GUI extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 JButton btn = (JButton) e.getSource();
+
                 System.out.println(btn.getName());
                 String separado = btn.getName();
                 String[] lisSeparad = separado.split("/");
                 System.out.println(lisSeparad[0] + "----" + lisSeparad[1]);
 
+                if (e.getSource().equals(MouseEvent.BUTTON2)) {
+                    System.out.println("por ");
+                }
+
                 int numX = Integer.parseInt(lisSeparad[0]);
                 int numY = Integer.parseInt(lisSeparad[1]);
-                
-                if (matrizCompleta[numX][numY].equals("x")) {
-                    System.out.println("pumbaaaa");
-//                    btn.setText("X");
-                    
-                    btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomb2.png")));
-                    
-                    
-//                    jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bomb.png")));
-                    
-                } else if (matrizCompleta[numX][numY].equals("0")) {
-                    System.out.println("NaicBomba");
-                    
-                    abrirCerBombas(numX, numY);
+
+                if (matrizCompleta2[numX][numY].equals("conB")) {
                 } else {
-                    btn.setText(matrizCompleta[numX][numY]);
+                    if (matrizCompleta[numX][numY].equals("x")) {
+                        System.out.println("pumbaaaa");
+//                    btn.setText("X");
+
+                        btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomb2.png")));
+
+//                    jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bomb.png")));
+                    } else if (matrizCompleta[numX][numY].equals("0")) {
+                        System.out.println("NaicBomba");
+
+                        abrirCerBombas(numX, numY);
+                    } else {
+                        btn.setText(matrizCompleta[numX][numY]);
+                    }
+
                 }
+
             }
 
             private void abrirCerBombas(int numXX, int numYY) {
@@ -570,10 +590,10 @@ public class GUI extends javax.swing.JFrame {
                                 mostrarBotonesEsquinas(numNuevo, numYY);
                                 btnAutoma[numNuevo][numYY].setEnabled(false);
                                 abrirCerBombas(numNuevo, numYY);
-                            }else{
+                            } else {
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                             }
-                            
+
                         }
                     }
 
@@ -583,14 +603,14 @@ public class GUI extends javax.swing.JFrame {
                     @Override
                     public void run() {
                         int numNuevo = numXX + 1;
-                        if (numNuevo <= CANT_COLUMNAS - 1) {
+                        if (numNuevo <= CANT_FILAS - 1) {
                             if (matrizCompleta[numNuevo][numYY].equals("0")) {
                                 matrizCompleta[numNuevo][numYY] = "";
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                                 mostrarBotonesEsquinas(numNuevo, numYY);
                                 btnAutoma[numNuevo][numYY].setEnabled(false);
                                 abrirCerBombas(numNuevo, numYY);
-                            }else{
+                            } else {
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                             }
                         }
@@ -608,7 +628,7 @@ public class GUI extends javax.swing.JFrame {
                                 mostrarBotonesEsquinas(numXX, numNuevo);
                                 btnAutoma[numXX][numNuevo].setEnabled(false);
                                 abrirCerBombas(numXX, numNuevo);
-                            }else{
+                            } else {
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
                             }
                         }
@@ -619,16 +639,16 @@ public class GUI extends javax.swing.JFrame {
                     @Override
                     public void run() {
                         int numNuevo = numYY + 1;
-                        if (numNuevo <= CANT_FILAS - 1) {
+                        if (numNuevo <= CANT_COLUMNAS - 1) {
                             if (matrizCompleta[numXX][numNuevo].equals("0")) {
                                 matrizCompleta[numXX][numNuevo] = "";
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
                                 mostrarBotonesEsquinas(numXX, numNuevo);
                                 btnAutoma[numXX][numNuevo].setEnabled(false);
                                 abrirCerBombas(numXX, numNuevo);
-                            }else{
+                            } else {
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
-                                
+
                             }
                         }
                     }
@@ -640,30 +660,63 @@ public class GUI extends javax.swing.JFrame {
 
     private void mostrarBotonesEsquinas(int numXXX, int numYYY) {
         btnAutoma[numXXX][numYYY].setText(matrizCompleta[numXXX][numYYY]);
-        if(numXXX+1 >=0 && numXXX+1 <=CANT_FILAS-1 && numYYY+1 >=0 && numYYY+1 <=CANT_COLUMNAS-1){//Derecha
-            if(!matrizCompleta[numXXX+1][numYYY+1].equals("") && !matrizCompleta[numXXX+1][numYYY+1].equals("0")){
-                btnAutoma[numXXX+1][numYYY+1].setText(matrizCompleta[numXXX+1][numYYY+1]);
+        if (numXXX + 1 >= 0 && numXXX + 1 <= CANT_FILAS - 1 && numYYY + 1 >= 0 && numYYY + 1 <= CANT_COLUMNAS - 1) {//Derecha
+            if (!matrizCompleta[numXXX + 1][numYYY + 1].equals("") && !matrizCompleta[numXXX + 1][numYYY + 1].equals("0")) {
+                btnAutoma[numXXX + 1][numYYY + 1].setText(matrizCompleta[numXXX + 1][numYYY + 1]);
             }
         }
-        if(numXXX-1 >=0 && numXXX-1 <=CANT_FILAS-1 && numYYY+1 >=0 && numYYY+1 <=CANT_COLUMNAS-1){//Izquierda
-            if(!matrizCompleta[numXXX-1][numYYY+1].equals("") && !matrizCompleta[numXXX-1][numYYY+1].equals("0")){
-                btnAutoma[numXXX-1][numYYY+1].setText(matrizCompleta[numXXX-1][numYYY+1]);
+        if (numXXX - 1 >= 0 && numXXX - 1 <= CANT_FILAS - 1 && numYYY + 1 >= 0 && numYYY + 1 <= CANT_COLUMNAS - 1) {//Izquierda
+            if (!matrizCompleta[numXXX - 1][numYYY + 1].equals("") && !matrizCompleta[numXXX - 1][numYYY + 1].equals("0")) {
+                btnAutoma[numXXX - 1][numYYY + 1].setText(matrizCompleta[numXXX - 1][numYYY + 1]);
             }
-            
+
         }
-        if(numXXX+1 >=0 && numXXX+1 <=CANT_FILAS-1 && numYYY-1 >=0 && numYYY-1 <=CANT_COLUMNAS-1){//Arriba
-            if(!matrizCompleta[numXXX+1][numYYY-1].equals("") && !matrizCompleta[numXXX+1][numYYY-1].equals("0")){
-                btnAutoma[numXXX+1][numYYY-1].setText(matrizCompleta[numXXX+1][numYYY-1]);
+        if (numXXX + 1 >= 0 && numXXX + 1 <= CANT_FILAS - 1 && numYYY - 1 >= 0 && numYYY - 1 <= CANT_COLUMNAS - 1) {//Arriba
+            if (!matrizCompleta[numXXX + 1][numYYY - 1].equals("") && !matrizCompleta[numXXX + 1][numYYY - 1].equals("0")) {
+                btnAutoma[numXXX + 1][numYYY - 1].setText(matrizCompleta[numXXX + 1][numYYY - 1]);
             }
-            
+
         }
-        if(numXXX-1 >=0 && numXXX-1 <=CANT_FILAS-1 && numYYY-1 >=0 && numYYY-1 <=CANT_COLUMNAS-1){//Abajo
-            if(!matrizCompleta[numXXX-1][numYYY-1].equals("") && !matrizCompleta[numXXX-1][numYYY-1].equals("0")){
-                btnAutoma[numXXX-1][numYYY-1].setText(matrizCompleta[numXXX-1][numYYY-1]);
+        if (numXXX - 1 >= 0 && numXXX - 1 <= CANT_FILAS - 1 && numYYY - 1 >= 0 && numYYY - 1 <= CANT_COLUMNAS - 1) {//Abajo
+            if (!matrizCompleta[numXXX - 1][numYYY - 1].equals("") && !matrizCompleta[numXXX - 1][numYYY - 1].equals("0")) {
+                btnAutoma[numXXX - 1][numYYY - 1].setText(matrizCompleta[numXXX - 1][numYYY - 1]);
             }
-            
+
         }
-        
+
+    }
+
+    private void verClikDerecho(JButton btnA) {
+        btnA.addMouseListener(new java.awt.event.MouseAdapter() {
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                if (evt.getButton() == 3) {
+                    System.out.println("siipretado");
+                    JButton btn = (JButton) evt.getSource();
+
+                    System.out.println(btn.getName());
+                    String separado = btn.getName();
+                    String[] lisSeparad = separado.split("/");
+                    System.out.println(lisSeparad[0] + "----" + lisSeparad[1]);
+
+                    int numX = Integer.parseInt(lisSeparad[0]);
+                    int numY = Integer.parseInt(lisSeparad[1]);
+
+                    if (matrizCompleta2[numX][numY].equals("sinB")) {//poner Bandera
+                        matrizCompleta2[numX][numY] = "conB";
+                        btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/flag.png")));
+                    } else if (matrizCompleta2[numX][numY].equals("conB")) {//poner signoPregunta
+                        matrizCompleta2[numX][numY] = "preg";
+                        btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/ask.png")));
+                    } else if (matrizCompleta2[numX][numY].equals("preg")) {
+                        matrizCompleta2[numX][numY] = "sinB";
+                        btn.setIcon(new ImageIcon(getClass().getResource("")));
+                    }
+
+                }
+            }
+        });
     }
 
 }
