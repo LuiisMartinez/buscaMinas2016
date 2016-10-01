@@ -1,5 +1,6 @@
 package gui;
 
+import java.applet.AudioClip;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,18 +8,22 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 public class GUI extends javax.swing.JFrame {
 
-    static String[][] matrizCompleta;
-    static String[][] matrizCompleta2;
+    public static String[][] matrizCompleta;//ver las bombas
+    public static String[][] matrizCompleta2;//para iconos
+    public static String[][] matrizCompleta3;//ver si ganó
     public static int CANT_FILAS = 0;
     public static int CANT_COLUMNAS = 0;
     public static int CANT_BOMBAS = 0;
-    JButton[][] btnAutoma;
-
+    public JButton[][] btnAutoma;
+    
     public GUI() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -37,6 +42,9 @@ public class GUI extends javax.swing.JFrame {
         opPrincipiante = new javax.swing.JRadioButton();
         opRelugar = new javax.swing.JRadioButton();
         opAvanzado = new javax.swing.JRadioButton();
+
+        modoPrincipiante.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        modoPrincipiante.setResizable(false);
 
         javax.swing.GroupLayout pnlJuegoPricipianteLayout = new javax.swing.GroupLayout(pnlJuegoPricipiante);
         pnlJuegoPricipiante.setLayout(pnlJuegoPricipianteLayout);
@@ -65,6 +73,8 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(pnlJuegoPricipiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        modoRegular.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnlJuegoRegular.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -96,6 +106,8 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        modoAvanzado.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
         javax.swing.GroupLayout pnlJuegoAvanzadoLayout = new javax.swing.GroupLayout(pnlJuegoAvanzado);
         pnlJuegoAvanzado.setLayout(pnlJuegoAvanzadoLayout);
         pnlJuegoAvanzadoLayout.setHorizontalGroup(
@@ -124,6 +136,7 @@ public class GUI extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         pnlInicioJuego.setBorder(javax.swing.BorderFactory.createTitledBorder("BuscaMinas"));
 
@@ -196,34 +209,40 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearJuegoActionPerformed
+        AudioClip sonidoVacio;
+        sonidoVacio = java.applet.Applet.newAudioClip(getClass().getResource("/sonidos/comienzo.wav"));
+        sonidoVacio.play();
+        
         if (opPrincipiante.isSelected()) {
             modoPrincipiante.setBounds(0, 0, 450, 450);
             modoPrincipiante.setLocationRelativeTo(null);
             modoPrincipiante.setResizable(false);
             modoPrincipiante.setVisible(true);
-
+            btnCrearJuego.setEnabled(false);
             comenzarCrearTodo(9, 9, 10);
-
+            
         } else if (opRelugar.isSelected()) {
             modoRegular.setBounds(0, 0, 690, 690);
             modoRegular.setLocationRelativeTo(null);
             modoRegular.setResizable(false);
             modoRegular.setVisible(true);
-
-            comenzarCrearTodo(16, 16, 10);
+            btnCrearJuego.setEnabled(false);
+            
+            comenzarCrearTodo(16, 16, 25);
 
         } else if (opAvanzado.isSelected()) {
             modoAvanzado.setBounds(0, 0, 1300, 690);
             modoAvanzado.setLocationRelativeTo(null);
             modoAvanzado.setResizable(false);
             modoAvanzado.setVisible(true);
+            btnCrearJuego.setEnabled(false);
 
-            comenzarCrearTodo(16, 30, 10);
+            comenzarCrearTodo(16, 30, 80);
 
         }
 
     }//GEN-LAST:event_btnCrearJuegoActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -293,17 +312,18 @@ public class GUI extends javax.swing.JFrame {
         btnAutoma = new JButton[cantFilas][cantColumnas];
         matrizCompleta = new String[cantFilas][cantColumnas];
         matrizCompleta2 = new String[cantFilas][cantColumnas];
+        matrizCompleta3 = new String[cantFilas][cantColumnas];
         generarMatrizCompleta();
-        generarBombasDeMatriz(cantBomb);
+        generarBombasDeMatriz(cantBomb, matrizCompleta);
         metodoCantBombas();
-        mostrarMatriz();
+        mostrarMatriz(matrizCompleta);
+        mostrarMatriz(matrizCompleta3);
 
         for (int i = 0; i < cantFilas; i++) {
             for (int j = 0; j < cantColumnas; j++) {
                 JButton btnA = new JButton();
                 btnAutoma[i][j] = btnA;
                 btnA.setName(i + "/" + j);
-
                 if (opPrincipiante.isSelected()) {
                     pnlJuegoPricipiante.add(btnA);
                 } else if (opRelugar.isSelected()) {
@@ -333,7 +353,12 @@ public class GUI extends javax.swing.JFrame {
                 matrizCompleta2[f][c] = "sinB";
             }
         }
-
+        
+        for (int f = 0; f < matrizCompleta3.length; f++) {
+            for (int c = 0; c < matrizCompleta3[f].length; c++) {
+                matrizCompleta3[f][c] = "o";
+            }
+        }
     }
 
     private static void metodoCantBombas() {
@@ -505,19 +530,20 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
-    private static void generarBombasDeMatriz(int cantBombas) {
+    private static void generarBombasDeMatriz(int cantBombas, String[][] matriz) {
         int cc = 0;
-        for (int f = 0; f < matrizCompleta.length; f++) {
+        for (int f = 0; f < matriz.length; f++) {
 
-            for (int c = 0; c < matrizCompleta[f].length; c++) {
+            for (int c = 0; c < matriz[f].length; c++) {
 
                 Random rand = new Random();
                 int x = rand.nextInt(CANT_FILAS);
                 int y = rand.nextInt(CANT_COLUMNAS);
 
                 if (cc < cantBombas) {
-                    if (!matrizCompleta[x][y].equals("x")) {
-                        matrizCompleta[x][y] = "x";
+                    if (!matriz[x][y].equals("x")) {
+                        matriz[x][y] = "x";
+                        matrizCompleta3[x][y] = "x";
                         cc++;
                     }
                 }
@@ -525,10 +551,10 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
-    private static void mostrarMatriz() {
-        for (int f = 0; f < matrizCompleta.length; f++) {
-            for (int c = 0; c < matrizCompleta[f].length; c++) {
-                System.out.print(matrizCompleta[f][c] + " ");
+    private static void mostrarMatriz(String[][] matriz) {
+        for (int f = 0; f < matriz.length; f++) {
+            for (int c = 0; c < matriz[f].length; c++) {
+                System.out.print(matriz[f][c] + " ");
             }
             System.out.println();
         }
@@ -558,17 +584,38 @@ public class GUI extends javax.swing.JFrame {
                 } else {
                     if (matrizCompleta[numX][numY].equals("x")) {
                         System.out.println("pumbaaaa");
+                        mostrarTodasBombas();
+                        
+                        AudioClip sonidoVacio;
+                        sonidoVacio = java.applet.Applet.newAudioClip(getClass().getResource("/sonidos/perder.wav"));
+                        sonidoVacio.play();
 //                    btn.setText("X");
-
+                        
                         btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomb2.png")));
-
+                        int valu = JOptionPane.showConfirmDialog(rootPane, "Ohhhh!! Perdiste ¿Desea seguir jugando?");
+                        if(valu == JOptionPane.YES_OPTION){
+                                    btnCrearJuego.setEnabled(true);
+                                    modoPrincipiante.dispose();
+                                    pnlJuegoPricipiante.removeAll();
+                                    modoRegular.dispose();
+                                    pnlJuegoRegular.removeAll();
+                                    modoAvanzado.dispose();
+                                    pnlJuegoAvanzado.removeAll();
+                                }else{
+                                    System.exit(0);
+                                }
 //                    jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bomb.png")));
                     } else if (matrizCompleta[numX][numY].equals("0")) {
                         System.out.println("NaicBomba");
-
+                        AudioClip sonidoVacio;
+                        sonidoVacio = java.applet.Applet.newAudioClip(getClass().getResource("/sonidos/vacio.wav"));
+                        sonidoVacio.play();
                         abrirCerBombas(numX, numY);
+                        verSiGano();
                     } else {
                         btn.setText(matrizCompleta[numX][numY]);
+                        matrizCompleta3[numX][numY] = "x";
+                        verSiGano();
                     }
 
                 }
@@ -576,6 +623,7 @@ public class GUI extends javax.swing.JFrame {
             }
 
             private void abrirCerBombas(int numXX, int numYY) {
+                matrizCompleta3[numXX][numYY] = "x";//////////////////////
                 matrizCompleta[numXX][numYY] = "";
                 btnAutoma[numXX][numYY].setEnabled(false);
 
@@ -585,12 +633,14 @@ public class GUI extends javax.swing.JFrame {
                         int numNuevo = numXX - 1;
                         if (numNuevo >= 0) {
                             if (matrizCompleta[numNuevo][numYY].equals("0")) {
+                                matrizCompleta3[numNuevo][numYY] = "x";//////////////////////
                                 matrizCompleta[numNuevo][numYY] = "";
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                                 mostrarBotonesEsquinas(numNuevo, numYY);
                                 btnAutoma[numNuevo][numYY].setEnabled(false);
                                 abrirCerBombas(numNuevo, numYY);
                             } else {
+                                matrizCompleta3[numNuevo][numYY] = "x";//////////////////////
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                             }
 
@@ -605,12 +655,14 @@ public class GUI extends javax.swing.JFrame {
                         int numNuevo = numXX + 1;
                         if (numNuevo <= CANT_FILAS - 1) {
                             if (matrizCompleta[numNuevo][numYY].equals("0")) {
+                                matrizCompleta3[numNuevo][numYY] = "x";//////////////////////
                                 matrizCompleta[numNuevo][numYY] = "";
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                                 mostrarBotonesEsquinas(numNuevo, numYY);
                                 btnAutoma[numNuevo][numYY].setEnabled(false);
                                 abrirCerBombas(numNuevo, numYY);
                             } else {
+                                matrizCompleta3[numNuevo][numYY] = "x";//////////////////////
                                 btnAutoma[numNuevo][numYY].setText(matrizCompleta[numNuevo][numYY]);
                             }
                         }
@@ -623,12 +675,14 @@ public class GUI extends javax.swing.JFrame {
                         int numNuevo = numYY - 1;
                         if (numNuevo >= 0) {
                             if (matrizCompleta[numXX][numNuevo].equals("0")) {
+                                matrizCompleta3[numXX][numNuevo] = "x";//////////////////////
                                 matrizCompleta[numXX][numNuevo] = "";
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
                                 mostrarBotonesEsquinas(numXX, numNuevo);
                                 btnAutoma[numXX][numNuevo].setEnabled(false);
                                 abrirCerBombas(numXX, numNuevo);
                             } else {
+                                matrizCompleta3[numXX][numNuevo] = "x";//////////////////////
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
                             }
                         }
@@ -641,12 +695,14 @@ public class GUI extends javax.swing.JFrame {
                         int numNuevo = numYY + 1;
                         if (numNuevo <= CANT_COLUMNAS - 1) {
                             if (matrizCompleta[numXX][numNuevo].equals("0")) {
+                                matrizCompleta3[numXX][numNuevo] = "x";//////////////////////
                                 matrizCompleta[numXX][numNuevo] = "";
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
                                 mostrarBotonesEsquinas(numXX, numNuevo);
                                 btnAutoma[numXX][numNuevo].setEnabled(false);
                                 abrirCerBombas(numXX, numNuevo);
                             } else {
+                                matrizCompleta3[numXX][numNuevo] = "x";//////////////////////
                                 btnAutoma[numXX][numNuevo].setText(matrizCompleta[numXX][numNuevo]);
 
                             }
@@ -654,6 +710,49 @@ public class GUI extends javax.swing.JFrame {
                     }
                 }).start();
 
+            }
+
+            private void verSiGano() {
+                int cont = 0;
+                int CantTotal = 0;
+                for (int f = 0; f < matrizCompleta3.length; f++) {
+                    for (int c = 0; c < matrizCompleta3[f].length; c++) {
+                        CantTotal = matrizCompleta3[c].length * matrizCompleta3[f].length;
+                        if(matrizCompleta3[f][c].equals("x")){
+                            cont++;
+                            if(cont == (CantTotal)){
+                                int respu = JOptionPane.showConfirmDialog(rootPane, "Ganador!!! ¿Desea seguir jugando?");
+                                if(respu == JOptionPane.YES_OPTION){
+                                    btnCrearJuego.setEnabled(true);
+                                    modoPrincipiante.dispose();
+                                    pnlJuegoPricipiante.removeAll();
+                                    modoRegular.dispose();
+                                    pnlJuegoRegular.removeAll();
+                                    modoAvanzado.dispose();
+                                    pnlJuegoAvanzado.removeAll();
+                                }else{
+                                    System.exit(0);
+                                }
+                           }
+                        }
+                    }
+                }
+                
+                mostrarMatriz(matrizCompleta);
+                mostrarMatriz(matrizCompleta3);
+                System.out.println(cont+" - "+(CantTotal));
+            }
+
+            private void mostrarTodasBombas() {
+                for (int f = 0; f < matrizCompleta.length; f++) {
+                    for (int c = 0; c < matrizCompleta[f].length; c++) {
+                        if(matrizCompleta[f][c].equals("x")){
+                            btnAutoma[f][c].setIcon(new ImageIcon(getClass().getResource("/imagenes/bomb2.png")));
+                            System.out.println(f+"-- -- --"+c);
+                        }
+                    }
+                    System.out.println();
+                }
             }
         });
     }
@@ -663,23 +762,27 @@ public class GUI extends javax.swing.JFrame {
         if (numXXX + 1 >= 0 && numXXX + 1 <= CANT_FILAS - 1 && numYYY + 1 >= 0 && numYYY + 1 <= CANT_COLUMNAS - 1) {//Derecha
             if (!matrizCompleta[numXXX + 1][numYYY + 1].equals("") && !matrizCompleta[numXXX + 1][numYYY + 1].equals("0")) {
                 btnAutoma[numXXX + 1][numYYY + 1].setText(matrizCompleta[numXXX + 1][numYYY + 1]);
+                matrizCompleta3[numXXX + 1][numYYY + 1] = "x";//////////////////////
             }
         }
         if (numXXX - 1 >= 0 && numXXX - 1 <= CANT_FILAS - 1 && numYYY + 1 >= 0 && numYYY + 1 <= CANT_COLUMNAS - 1) {//Izquierda
             if (!matrizCompleta[numXXX - 1][numYYY + 1].equals("") && !matrizCompleta[numXXX - 1][numYYY + 1].equals("0")) {
                 btnAutoma[numXXX - 1][numYYY + 1].setText(matrizCompleta[numXXX - 1][numYYY + 1]);
+                matrizCompleta3[numXXX - 1][numYYY + 1] = "x";//////////////////////
             }
 
         }
         if (numXXX + 1 >= 0 && numXXX + 1 <= CANT_FILAS - 1 && numYYY - 1 >= 0 && numYYY - 1 <= CANT_COLUMNAS - 1) {//Arriba
             if (!matrizCompleta[numXXX + 1][numYYY - 1].equals("") && !matrizCompleta[numXXX + 1][numYYY - 1].equals("0")) {
                 btnAutoma[numXXX + 1][numYYY - 1].setText(matrizCompleta[numXXX + 1][numYYY - 1]);
+                matrizCompleta3[numXXX + 1][numYYY - 1] = "x";//////////////////////
             }
 
         }
         if (numXXX - 1 >= 0 && numXXX - 1 <= CANT_FILAS - 1 && numYYY - 1 >= 0 && numYYY - 1 <= CANT_COLUMNAS - 1) {//Abajo
             if (!matrizCompleta[numXXX - 1][numYYY - 1].equals("") && !matrizCompleta[numXXX - 1][numYYY - 1].equals("0")) {
                 btnAutoma[numXXX - 1][numYYY - 1].setText(matrizCompleta[numXXX - 1][numYYY - 1]);
+                matrizCompleta3[numXXX - 1][numYYY - 1] = "x";//////////////////////
             }
 
         }
@@ -706,6 +809,7 @@ public class GUI extends javax.swing.JFrame {
                     if (matrizCompleta2[numX][numY].equals("sinB")) {//poner Bandera
                         matrizCompleta2[numX][numY] = "conB";
                         btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/flag.png")));
+                        
                     } else if (matrizCompleta2[numX][numY].equals("conB")) {//poner signoPregunta
                         matrizCompleta2[numX][numY] = "preg";
                         btn.setIcon(new ImageIcon(getClass().getResource("/imagenes/ask.png")));
